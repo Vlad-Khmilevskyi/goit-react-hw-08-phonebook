@@ -1,18 +1,30 @@
-import { Label} from './Filter.styled';
-import { useDispatch } from 'react-redux';
-import { setFilterContacts } from '../../redux/contacts/filterSlice';
-
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
+
+import { Form } from './authForm.styles';
+import { register } from 'redux/auth/operations';
+
+
+import Button from '@mui/material/Button';
 import { styled } from '@mui/system';
 import Input, { inputClasses } from '@mui/base/Input';
 
-export const Filter = () => {
+export const RegisterForm = () => {
   const dispatch = useDispatch();
+  const handleSubmit = evt => {
+    evt.preventDefault();
+    const form = evt.currentTarget;
 
-  const handlerFilter = evt => {
-    dispatch(setFilterContacts(evt.target.value));
+    dispatch(
+      register({
+        name: form.elements.name.value,
+        email: form.elements.email.value,
+        password: form.elements.password.value,
+      })
+    );
+    form.reset();
   };
-
+  
   const StyledInput = styled(Input)(
   ({ theme }) => `
 
@@ -39,9 +51,32 @@ export const Filter = () => {
   }`,);
 
   return (
-    <Label>
-      <StyledInput type="text" name="filter" placeholder="Find contacts by name" onChange={handlerFilter} />
-    </Label>
+    <>
+    <h1>Your personal phone book</h1>
+    <Form autoComplete="off" onSubmit={handleSubmit}>
+      <label>
+        <StyledInput
+          type="text"
+          name="name"
+          required
+          placeholder="Username"
+        />
+        <StyledInput
+          type="email"
+          name="email"
+          required
+          placeholder="Email"
+        />
+        <StyledInput
+          type="password"
+          name="password"          
+          required
+          placeholder="Password"     
+        />
+      </label>
+      <Button variant="contained" color="success" type="submit">Sing Up</Button>
+      </Form>
+      </>
   );
 };
 

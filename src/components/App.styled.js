@@ -6,11 +6,3 @@ export const Section = styled.section`
   left: 50%;
   transform: translateX(-50%);
 `;
-
-export const MainHeader = styled.h1`
-  // margin-bottom: 20px;
-`;
-
-export const SecondaryHeader = styled.h2`
-  // margin-bottom: 20px;
-`;
