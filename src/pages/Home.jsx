@@ -1,4 +1,4 @@
-import { SectionHome } from './Home.styles';
+import { SectionHome } from './Pages.styles';
 
 const Home = () => {
   return (

@@ -1,30 +1,31 @@
-import * as React from 'react';
-import { useDispatch } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
 import { Form } from './authForm.styles';
-import { register } from 'redux/auth/operations';
+import { logIn } from 'redux/auth/operations';
 
-
+import * as React from 'react';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/system';
 import Input, { inputClasses } from '@mui/base/Input';
+import { NavLink } from 'react-router-dom';
 
-export const RegisterForm = () => {
+export const LoginForm = () => {
   const dispatch = useDispatch();
+  const errorLogin = useSelector(state => state.error);
+
   const handleSubmit = evt => {
     evt.preventDefault();
     const form = evt.currentTarget;
 
     dispatch(
-      register({
-        name: form.elements.name.value,
+      logIn({
         email: form.elements.email.value,
         password: form.elements.password.value,
       })
     );
+
     form.reset();
   };
-  
+
   const StyledInput = styled(Input)(
   ({ theme }) => `
 
@@ -51,16 +52,10 @@ export const RegisterForm = () => {
   }`,);
 
   return (
-    <>
-    <h1>Your personal phone book</h1>
     <Form autoComplete="off" onSubmit={handleSubmit}>
-      <label>
-        <StyledInput
-          type="text"
-          name="name"
-          required
-          placeholder="Username"
-        />
+      <h1>Login Form</h1>
+      {errorLogin && <div>Error login</div>}      
+        <label>
         <StyledInput
           type="email"
           name="email"
@@ -71,12 +66,12 @@ export const RegisterForm = () => {
           type="password"
           name="password"          
           required
-          placeholder="Password"     
+          placeholder="Password"    
         />
-      </label>
-      <Button variant="contained" color="success" type="submit">Sing Up</Button>
-      </Form>
-      </>
+        </label>
+        <Button variant="contained" color="success" type="submit">Log In</Button>
+        <p className="TextAuth">Don't have an account? <NavLink to="/register">Sign up</NavLink></p>      
+    </Form>
   );
 };
 

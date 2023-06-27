@@ -1,30 +1,31 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { Form } from './authForm.styles';
-import { logIn } from 'redux/auth/operations';
-
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
+
+import { Form } from './authForm.styles';
+import { register } from 'redux/auth/operations';
+import { NavLink } from 'react-router-dom';
+
+
 import Button from '@mui/material/Button';
 import { styled } from '@mui/system';
 import Input, { inputClasses } from '@mui/base/Input';
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
   const dispatch = useDispatch();
-  const errorLogin = useSelector(state => state.error);
-
   const handleSubmit = evt => {
     evt.preventDefault();
     const form = evt.currentTarget;
 
     dispatch(
-      logIn({
+      register({
+        name: form.elements.name.value,
         email: form.elements.email.value,
         password: form.elements.password.value,
       })
     );
-
     form.reset();
   };
-
+  
   const StyledInput = styled(Input)(
   ({ theme }) => `
 
@@ -51,11 +52,15 @@ export const LoginForm = () => {
   }`,);
 
   return (
-    <>
-      <h1>Your personal phone book</h1>
-      {errorLogin && <div>Error login</div>}
-      <Form autoComplete="off" onSubmit={handleSubmit}>
+    <Form autoComplete="off" onSubmit={handleSubmit}>
+      <h1>Registration</h1>    
         <label>
+        <StyledInput
+          type="text"
+          name="name"
+          required
+          placeholder="Username"
+        />
         <StyledInput
           type="email"
           name="email"
@@ -66,12 +71,12 @@ export const LoginForm = () => {
           type="password"
           name="password"          
           required
-          placeholder="Password"    
+          placeholder="Password"     
         />
         </label>
-        <Button variant="contained" color="success" type="submit">Log In</Button>
-      </Form>
-    </>
+      <Button variant="contained" color="success" type="submit">Sing Up</Button>
+      <p>Already registered? <NavLink to={'/login'}>Sign in</NavLink></p>
+    </Form>
   );
 };
 
